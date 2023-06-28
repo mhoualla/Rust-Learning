@@ -71,3 +71,23 @@ fn main() {
 ```
 **Answer: DOES NOT compile**  
 Context: A variable cannot be assigned to a value of a different type than its original type.
+
+# Question 8
+The largest number representable by the type i128 is:   
+**Answer: 2^127 -1**
+
+# Question 9
+If `x : u8 = 0`, what will happen when computing `x-1`  
+**Answer: It depends on the compiler mode**  
+Context: This expression will panic in debug mode and return 255 in release mode.  
+
+# Question 10
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.
+``` Rust
+fn main() {
+  let x: fsize = 2.0;
+  println!("{x}");
+}
+``` 
+**Answer: DOES NOT compile**  
+Context: The type fsize does not exist. Floats must be either f32 or f64.  
