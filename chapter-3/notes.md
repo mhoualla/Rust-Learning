@@ -209,3 +209,72 @@ We specify `char` literals with single quotes, as opposed to string literals, wh
 Compound types can group multiple values into one type. Rust has two primitive compound types: tuples and arrays.  
 
 # The Tuple Type 
+A `tuple` is a general way way of grouping together a number of values with a variety of types into one `compound` type.
+
+We create a tuple by writing a comma-separated list of values inside parentheses. Each position in the tuple has a type, and the types of the different values in the tuple don’t have to be the same. We’ve added optional type annotations in this example:
+
+``` Rust
+fn main() {
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
+
+The variable `tup` binds the entire tuple because a tuple is considered a single compound element. To get individual types out of a tuple, we can use pattern matching to destructure a tuple value..  
+
+``` Rust
+fn main() {
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
+
+This is called `destructuring` because it's breaking a single tuple into three parts.  
+
+We can also access a single tuple element directly using `.` followed by the index of the value we want to access. 
+
+``` Rust
+fn main() {
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+
+    let five_hundred = x.0;
+
+    let six_point_four = x.1;
+
+    let one = x.2;
+}
+```
+
+The tuple without any values has a special name, `unit`. This value and its corresponding type are both written `()` and represent an empty value or an empty return type. Expressions implicitly return the unit value if they don’t return any other value. 
+
+
+# The Array Type  
+
+Another way to have a collection of multiple values is with an Array. Unlike tuple, every element of an array must have the same type. Arrays in Rust have a fixed length. 
+
+``` Rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+}
+```
+
+Arrays are useful when you want your data allocated on the stack rather than the heap, or when you want to ensure that you have a fixed number of elements (that do not need to change). 
+
+``` Rust
+let months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"];
+```
+
+You write an array's type using square brackets with the type of each element, a semicolon, and then the number of elements in the array..
+
+``` Rust
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+```
+
+Here, `i32` is the type of each element. After the semicolon, the number `5` indicates the array contains five elements. 
+
+You can also initialize an array to contain the same value for each element by specifying the initial value, followed by a semicolon, and then the length of the array in square brackets, as shown here:
+
+``` Rust
+let a = [3; 5];
+```
+
+The array contains 5 elements, all of which are set to the value 3. 
