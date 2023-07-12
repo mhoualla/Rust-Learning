@@ -91,3 +91,139 @@ fn main() {
 ``` 
 **Answer: DOES NOT compile**  
 Context: The type fsize does not exist. Floats must be either f32 or f64.  
+
+# Question 11
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed:  
+``` Rust
+fn main() {
+  let message = "The temperature today is:";
+  let x = [message, 100];
+  println!("{} {}", x[0], x[1]);
+}
+```
+
+**Answer: This program does NOT compile**  
+Context: An array can only contain elements of a single type.
+
+# Question 12
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.  
+``` Rust
+fn main() {
+  let t = ([1; 2], [3; 4]);
+  let (a, _) = t;
+  println!("{}", a[0] + t.1[0]); 
+}
+```
+**Answer: This program DOES compile. The output will be 4**  
+Context: The syntax [x; y] declares an array with y copies of the value x. The syntax (a, _) destructures t and binds a to [1; 2]. The syntax t.1 refers to the second element of t, which is [3; 4].  
+
+
+# Question 13
+The keyword for declaring a new function in Rust is:  
+**Answer: fn**  
+
+# Question 14  
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.  
+```Rust
+
+fn f(x) { 
+  println!("{x}");
+}
+fn main() {
+  f(0);
+}
+```  
+
+**Answer: This program does not compile**  
+Context: A function must declare the types of its parameters.
+
+# Question 15  
+In Rust, a curly-brace block like { /* ... */ } is:  
+**Answer: An expression and a syntatic scope**  
+
+# Question 16  
+Determine whether the program will pass the compiler. If it passes, write the expected otuput of the program if it were executed.  
+
+```Rust
+
+fn f(x: i32) -> i32 { x + 1 }
+fn main() {
+  println!("{}", f({let y = 1;
+    y + 1
+  }));
+}
+```  
+**Answer: It does compile. The output is 3**  
+
+# Question 17  
+True/false: executing these two pieces of code results in the same value for `x`.  
+
+Snippet 1:  
+```Rust
+let x = if cond { 1 } else { 2 };
+```
+
+Snippet 2:  
+```Rust
+
+let x;
+if cond {
+  x = 1;
+} else {
+  x = 2;
+}
+```   
+**Answer: True**  
+Context: The first if-expression is a more concise way of representing the behavior of the second if-statement.
+
+Note that Rust does not require x to be initially declared with let mut in the second snippet. This is because Rust can determine that x is only ever assigned once, since only one branch of the if-statement will ever execute.  
+
+# Question 18  
+
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.  
+```Rust
+fn main() {
+  let x = 1;
+  let y = if x { 0 } else { 1 }; 
+  println!("{y}");
+}
+```  
+**Answer: Does not Compile**  
+Context: The condition to an if-expression must be a boolean. Rust does not have a concept of "truthy" or "falsy" values.  
+
+# Question 19  
+True/false: this code will terminate  
+```Rust
+fn main() {
+    let mut x = 0;
+    'a: loop {
+        x += 1;
+        'b: loop {
+            if x > 10 {
+                continue 'a;
+            } else {
+                break 'b;
+            }      
+        }
+        break;       
+    }
+}
+```  
+**Answer: Terminates after the first iteration of the loop**
+
+# Question 20  
+
+Determine whether the program will pass the compiler. If it passes, write the expected output of the program if it were executed.  
+
+```Rust
+
+fn main() {
+    let a = [5; 10];
+    let mut sum = 0;
+    for x in a {
+        sum += x;
+    }
+    println!("{sum}");
+}
+```  
+**Answer: Compiles + output is 50**

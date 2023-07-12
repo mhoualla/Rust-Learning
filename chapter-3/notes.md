@@ -278,3 +278,333 @@ let a = [3; 5];
 ```
 
 The array contains 5 elements, all of which are set to the value 3. 
+# Accessing Array Elements  
+An array is a single chunk of memory of a known, fixed size that can be allocated on the stack. You can access elements of an array using indexing, like this:
+
+``` Rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+
+    let first = a[0];
+    let second = a[1];
+}
+```
+
+# Invalid Array Element Access  
+A program such as this
+
+``` Rust
+use std::io;
+
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+
+    println!("Please enter an array index.");
+
+    let mut index = String::new();
+
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line");
+
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number");
+
+    let element = a[index];
+
+    println!("The value of the element at index {index} is: {element}");
+}
+```
+
+Will result in a runtime error at the point of using an invalid value in the indexing operation. The program exited with an error message and didn't execute the final `println!` statement.  
+
+When you attempt to access an element using indexing, Rust will check that the index you've specified is less than the array length.  
+1. If the index is greater than or equal to the length, Rust will panic.  
+2. This check has to happen at runtime, especially in this case, because the compiler can't possible know what a value a user will enter when they run the code later.  
+
+# Functions  
+The `fn` keyword allows you to declare new functions.  
+1. Rust code uses snake case as the conventional style for functions and variable names.   
+
+``` Rust
+fn main() {
+    println!("Hello, world!");
+
+    another_function();
+}
+
+fn another_function() {
+    println!("Another function.");
+}
+``` 
+
+We define a function in Rust by entering `fn` followed by a function name and a set of parentheses. The curly brackets tell the compiler where the function body begins and ends.   
+
+# Parameters  
+
+We can define functions to have parameters, which are special variables that are part of a function's signature.  
+
+``` Rust 
+fn main() {
+    another_function(5);
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {x}");
+}
+```  
+The declaration of `another_function` has one parameter named `x`.  
+1. The type of `x` is specified as `i32`  
+
+In function signatures, you must declare the type of each parameter.  
+1. This is a deliberate decision in Rust's design: requiting type annotation in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean.  
+
+``` Rust
+fn main() {
+    print_labeled_measurement(5, 'h');
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+``` 
+
+This example creates a function named `print_labeled_measurement` with two parameters. The first parameter is named `value` and is an `i32`. The second is named `unit_label` and is type `char`.  
+
+
+# Statements and Expressions  
+Function bodies aer made up of a series of statements optionally ending in a expression. 
+1. So far, the functions we've covered have not included an ending expression, but you have seen an expression as part of a statement.  
+2. Because Rust is an expression-based language, this is an important distinction to understand.  
+3. Other languages don't have the same distinctions..  
+
+`Statements` are instructions that perform some action and do not return a value.  
+`Expressions` evaluate to a resultant value.  
+
+Statement:  
+```Rust
+fn main() {
+    let y = 6;
+}
+```
+
+Function definitions are also statements. Statements do not return values. Therefore, you can't assign a `let` statement to another variable, as the following code tries to do; you'll get an error:  
+```Rust
+fn main() {
+    let x = (let y = 6);
+}
+```  
+
+The `let y = 6` statement does not return a value, so there isn't anything for `x` to bind to. 
+1. This is different from what happens in other languages, such as C and Ruby, where the assignment returns the value of the assignment.  
+2. In those languages, you can write `x = y = 6` and have both `x` and `y` have the value 6; that is not the case in Rust.  
+
+Expressions evaluate to a value and make up most of the rest of the code that you'll write in Rust. 
+1. Consider a math operation, such as `5 + 6`, which is an expression that evaluates to the value `11`.  
+2. Expressions can be part of statements. 
+3. Calling a function is an expression.  
+4. Calling a macro is an expression.  
+5. A new scope block created with curly brackets is an expression.  
+
+```Rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+```
+
+This expression:
+```Rust
+{
+    let x = 3;
+    x + 1
+}
+```  
+Is a block that, in this case, evaluates to `4`. That value gets bound to `y` as part of the `let` statement.  
+
+Note that the `x+1` line doesn't have a semicolon at the end.  
+1. Expressions do not including ending semicolons.  
+2. if you add a semicolon to the end of an expression, you turn it into a statement.  
+3. it will then not return a value.  
+
+
+# Functions with Return Values  
+Functions can return values to the code that calls them. We don't name return values, but we must declare their type after an arrow `->`. In Rust, the return value of the function is synonymous with the value of the final expression in the block of the body of a function. You can return early from a function by using a `return` keyword and specifying a value, but most functions return the last expression implicitly. Here's an example of a function that returns a value:  
+
+```Rust
+fn five() -> i32 {
+    5
+}
+
+fn main() {
+    let x = five();
+
+    println!("The value of x is: {x}");
+}
+
+```  
+
+There are no function calls, macros, or even `let` statements in the `five` function --- just the number `5` itself.  
+1. That's perfectly valid in Rust  
+2. Note that the function's return type is specified too, as `-> i32`  
+3. The line `let x = five();` shows that we're using the return value of a function to initialize a variable.  
+4. Because the function five returns a 5, that line is the same as the following:
+```Rust
+let x = 5
+```  
+5. Second, the five function has no parmaeters and defines the type of the return value, but the body of the function is a lonely 5 with no semicolon because it's an expression whose value we want to return.  
+
+Let's look at another example:  
+```Rust
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+```  
+Running this code will print `The value of x is: 6`. But if we place a semicolon at the end of the line containing `x + 1`, changing it from an expression to a statement, we'll get an error.  
+1. The main error message, `mismatched types`, reveals the core issue with this code.  
+2. The definition of the function `plus_one` says that it will return an `i32`, but statements don't evaluate to a value, which is expressed by `()`, the unit type. Therefore, nothing is returned, which contradicts the function definition and results in an error.  
+
+# Comments  
+`///`  
+Nice.  
+
+# Control Flow  
+The ability to run some code depending on whether a condition is `true` and to run some code repeatedly while a condition is `true` are basic building blocks in most programming languages.  
+
+# If Statements  
+An if expression allows you to branch your code depending on conditions. You provide a condition and then state, "If this code is met, run this block of code. If the condition is not met, do not run this block of code"  
+
+```Rust
+fn main() {
+    let number = 3;
+
+    if number < 5 {
+        println!("condition was true");
+    } else {
+        println!("condition was false");
+    }
+}
+```  
+
+This is intuitive. Notice the lack of parentheses. 
+
+# Using if in a let statement  
+Because `if` is an expression, we can use it on the right side of a `let` statement to assign the outcome to a variable.  
+
+```Rust
+fn main() {
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {number}");
+}
+```  
+
+Reminder that Rust `needs` to know at compile time what type the `number` variable is, definitively. Rust would not be able to do that if the type of number was only determined at runtime; the compiler would be more complex and would make fewer guarantees about the code if it had to keep track of multiple hypothetical types for any variable.  
+
+# Repetition with Loops  
+Rust has three kinds of loops: loop, while, and for.  
+
+# Repeating Code with loop  
+The `loop` keyword tells Rust to execute a block of code over and over again forever or until you explicitly tell it to stop.  
+
+```Rust
+fn main() {
+    loop {
+        println!("again!");
+    }
+}
+```  
+You can use the `break` keyword within the loop to tell the program when to stop executing the loop. In a different vein, `continue` will skip over any remaining code in this iteration of the loop and go to the next iteration.  
+
+# Returning Values from Loops  
+One of the uses of a loop is to retry an operation you know might fail, such as checking whether a thread has completing its job.  
+1. You might also need to pass the result of that operation out of the loop to the rest of your code. 
+2. To do this, you can add the value you want returned after the break expression you use to stop the loop; that value will be returned out of the loop so you can use it:  
+
+```Rust
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+}
+```  
+
+# Loop Labels to Disambiguate Between Multiple Loops  
+If you have loops within loops, break and continue apply to the innermost loop at that point.  
+1. You can optionally specify a loop label on a loop that you can then use with break or continue to specify that those keywords apply to the labeled loop instead of the innermost loop. 
+2. Loop labels must begin with a single quote.  
+
+```Rust
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```  
+
+# Conditional Loops with while  
+```Rust
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+}
+```  
+
+# Looping Through a Collection with for  
+```Rust
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+}
+
+```
+
+
+
